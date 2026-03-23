@@ -35,6 +35,3 @@ jobs:
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
         kubectl rollout restart deployment k8s-app-deployment
-        
-    - name: Verify
-      run: kubectl get pods
