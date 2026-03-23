@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: k8s-app-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: k8s-app
@@ -15,7 +15,6 @@ spec:
       containers:
        - name: k8s-app
          image: solzate7762/k8s-app
-  imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-        
+         imagePullPolicy: Always
+         ports:
+          - containerPort: 80
