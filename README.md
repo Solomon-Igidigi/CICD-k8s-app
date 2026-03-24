@@ -122,7 +122,7 @@ k8s-app=yourusername/k8s-app:<image-tag>
 
 ---
 
-## 🚀 Kubernetes Deployment Configuration
+## Kubernetes Deployment Configuration
 
 Ensure your `deployment.yaml` uses:
 
