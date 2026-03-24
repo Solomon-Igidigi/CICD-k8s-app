@@ -2,36 +2,37 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout code
-      uses: actions/checkout@v4 # Updated to v4
+      uses: actions/checkout@v3
 
     - name: Log in to Docker Hub
-      uses: docker/login-action@v3
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker image
-      run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/k8s-app:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/k8s-app:latest
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/k8s-app:v3 .
 
-    # --- THIS PART REPLACES YOUR OLD KUBECONFIG STEPS ---
-    - name: Start Minikube
-      uses: medyagh/setup-minikube@latest
-      with:
-        driver: docker
+    - name: Push Docker image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/k8s-app:v3
 
-    - name: Deploy to Kubernetes
+    - name: Set up Kubeconfig
       run: |
-        # No need to echo secrets; setup-minikube configures kubectl automatically
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
-        kubectl rollout restart deployment k8s-app-deployment
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+    #- name: Deploy to Kubernetes
+      #run: |
+        #kubectl apply -f deployment.yaml
+        #kubectl apply -f service.yaml
+        #kubectl rollout restart deployment k8s-app-deployment
