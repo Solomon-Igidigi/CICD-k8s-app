@@ -25,14 +25,3 @@ jobs:
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/k8s-app:v3
-
-    - name: Set up Kubeconfig
-      run: |
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-
-    #- name: Deploy to Kubernetes
-      #run: |
-        #kubectl apply -f deployment.yaml
-        #kubectl apply -f service.yaml
-        #kubectl rollout restart deployment k8s-app-deployment
